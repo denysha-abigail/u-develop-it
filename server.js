@@ -49,40 +49,53 @@ app.get('/api/candidates', (req, res) => {
         });
     });
 })
-            
+
 
 // GET a single candidate
-            // db.query(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     console.log(row);
-            // });
+// endpoint has route parameter that will hold the value of the id to specify which candidate we'll select from the database
+app.get('/api/candidate/:id', (req, res) => {
+    const sql = `SELECT * FROM candidates WHERE id = ?`;
+    // in the database call, we'll assign the captured value populated in the req.params object with the key id to params
+    // because params can be accepted in the database as an array, params is assigned as an array with a single element
+    const params = [req.params.id];
+
+    db.query(sql, params, (err, row) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'success',
+            data: row
+        });
+    });
+});
+
 
 // DELETE a candidate
 // ? denotes a placeholder (making this a prepared statement that can execute the same sql statements repeatedly using different values in place of the placeholder)
 // the additional parameter afterwards provides values to use in place of the prepared statement's placeholders
 // equivalent to saying DELETE * FROM candidates WHERE id = 1 
-            // db.query(`DELETE FROM candidates WHERE id = ?`, 1, (err, result) => {
-            //     if (err) {
-            //       console.log(err);
-            //     }
-            //     console.log(result);
-            //   });
+// db.query(`DELETE FROM candidates WHERE id = ?`, 1, (err, result) => {
+//     if (err) {
+//       console.log(err);
+//     }
+//     console.log(result);
+//   });
 
 // CREATE a candidate
 // INSERT INTO to add values to candidates table that are assigned to the params const
-            // const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected) 
-            //                 VALUES (?, ?, ?, ?)`;
+// const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected) 
+//                 VALUES (?, ?, ?, ?)`;
 // four placeholders must match four values in params (an array must be used) as well as the order
-            // const params = [1, 'Ronald', 'Firebank', 1];
+// const params = [1, 'Ronald', 'Firebank', 1];
 
-            // db.query(sql, params, (err, result) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     console.log(result);
-            // });
+// db.query(sql, params, (err, result) => {
+//     if (err) {
+//         console.log(err);
+//     }
+//     console.log(result);
+// });
 
 // default response for any other request (Not Found)
 // displays 404 response when user tries undefined endpoints at the server
