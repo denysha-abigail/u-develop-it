@@ -75,13 +75,30 @@ app.get('/api/candidate/:id', (req, res) => {
 // DELETE a candidate
 // ? denotes a placeholder (making this a prepared statement that can execute the same sql statements repeatedly using different values in place of the placeholder)
 // the additional parameter afterwards provides values to use in place of the prepared statement's placeholders
-// equivalent to saying DELETE * FROM candidates WHERE id = 1 
-// db.query(`DELETE FROM candidates WHERE id = ?`, 1, (err, result) => {
-//     if (err) {
-//       console.log(err);
-//     }
-//     console.log(result);
-//   });
+// equivalent to saying DELETE * FROM candidates WHERE id = 1 if the params value was 1
+
+app.delete('/api/candidate/:id', (req, res) => {
+    const sql = `DELETE FROM candidates WHERE id = ?`;
+    const params = [req.params.id];
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            res.statusMessage(400).json({ error: res.message }); 
+            // if user tries to delete a candidate that doesn't exist
+        } else if (!result.affectedRows) {
+            res.json({
+                message: 'Candidate not found'
+            });
+        } else {
+            res.json({
+                message: 'deleted',
+                // will verify whether any rows were changed and how many
+                changes: result.affectedRows,
+                id: req.params.id
+            });
+        }
+    });
+});
 
 // CREATE a candidate
 // INSERT INTO to add values to candidates table that are assigned to the params const
