@@ -43,6 +43,17 @@ db.query(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
     console.log(row);
 });
 
+// DELETE a candidate
+// ? denotes a placeholder (making this a prepared statement that can execute the same sql statements repeatedly using different values in place of the placeholder)
+// the additional parameter afterwards provides values to use in place of the prepared statement's placeholders
+// equivalent to saying DELETE * FROM candidates WHERE id = 1 
+db.query(`DELETE FROM candidates WHERE id = ?`, 1, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log(result);
+  });
+
 // default response for any other request (Not Found)
 // displays 404 response when user tries undefined endpoints at the server
 // this is a catchall route and must be placed as the last route as it overrides all the others if placed before
