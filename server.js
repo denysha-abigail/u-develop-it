@@ -21,6 +21,20 @@ const db = mysql.createConnection(
     console.log('Connected to the election database.')
 );
 
+// test connection
+// db object is using the query() method that runs the sql query and executes the callback with all the resulting rows that match the query
+// once the method executes the sql command, the callback function captures the responses in two variables -> err for the error response and rows for the database query response
+// returns array of objects with each object representing a row of the candidates table ->
+// {
+//     id: 1,
+//     first_name: 'Ronald',
+//     last_name: 'Firbank',
+//     industry_connected: 1
+// },
+db.query(`SELECT * FROM candidates`, (err, rows) => {
+    console.log(rows);
+});
+
 // default response for any other request (Not Found)
 // displays 404 response when user tries undefined endpoints at the server
 // this is a catchall route and must be placed as the last route as it overrides all the others if placed before
