@@ -36,23 +36,37 @@ const db = mysql.createConnection(
             // });
 
 // GET a single candidate
-db.query(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
-    if (err) {
-        console.log(err);
-    }
-    console.log(row);
-});
+            // db.query(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
+            //     if (err) {
+            //         console.log(err);
+            //     }
+            //     console.log(row);
+            // });
 
 // DELETE a candidate
 // ? denotes a placeholder (making this a prepared statement that can execute the same sql statements repeatedly using different values in place of the placeholder)
 // the additional parameter afterwards provides values to use in place of the prepared statement's placeholders
 // equivalent to saying DELETE * FROM candidates WHERE id = 1 
-db.query(`DELETE FROM candidates WHERE id = ?`, 1, (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    console.log(result);
-  });
+            // db.query(`DELETE FROM candidates WHERE id = ?`, 1, (err, result) => {
+            //     if (err) {
+            //       console.log(err);
+            //     }
+            //     console.log(result);
+            //   });
+
+// CREATE a candidate
+// INSERT INTO to add values to candidates table that are assigned to the params const
+            // const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected) 
+            //                 VALUES (?, ?, ?, ?)`;
+// four placeholders must match four values in params (an array must be used) as well as the order
+            // const params = [1, 'Ronald', 'Firebank', 1];
+
+            // db.query(sql, params, (err, result) => {
+            //     if (err) {
+            //         console.log(err);
+            //     }
+            //     console.log(result);
+            // });
 
 // default response for any other request (Not Found)
 // displays 404 response when user tries undefined endpoints at the server
