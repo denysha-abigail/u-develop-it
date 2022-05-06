@@ -21,7 +21,6 @@ const db = mysql.createConnection(
     console.log('Connected to the election database.')
 );
 
-// test connection
 // db object is using the query() method that runs the sql query and executes the callback with all the resulting rows that match the query
 // once the method executes the sql command, the callback function captures the responses in two variables -> err for the error response and rows for the database query response
 // returns array of objects with each object representing a row of the candidates table ->
@@ -31,9 +30,26 @@ const db = mysql.createConnection(
 //     last_name: 'Firbank',
 //     industry_connected: 1
 // },
-            // db.query(`SELECT * FROM candidates`, (err, rows) => {
-            //     console.log(rows);
-            // });
+
+// GET all candidates from candidates table
+// route is designated with the endpoint /api/candidates
+app.get('/api/candidates', (req, res) => {
+    const sql = `SELECT * FROM candidates`;
+
+    db.query(sql, (err, rows) => {
+        if (err) {
+            // send status code of 500 (server error) and place error message within JSON object
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        // if no error, err is null
+        res.json({
+            message: 'success',
+            data: rows
+        });
+    });
+})
+            
 
 // GET a single candidate
             // db.query(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
