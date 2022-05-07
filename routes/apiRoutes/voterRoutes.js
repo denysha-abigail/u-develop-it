@@ -93,5 +93,25 @@ router.put('/voter/:id', (req, res) => {
 });
 
 // allow people to deactivate their account (DELETE)
+router.delete('/voter/:id', (req, res) => {
+    const sql = `DELETE FROM voters WHERE id = ?`;
+    // notice a params array was not created here to store req.params.id; although creating semantic variable names will increase the legibility of the code, there is a cost to allocating memory to store the object; without the array, the code is just as legible 
+
+    db.query(sql, req.params.id, (err, result) => {
+        if (err) {
+            res.status(400).json({ error: res.message });
+        } else if (!result.affectedRows) {
+            res.json({
+                message: 'Voter not found'
+            });
+        } else {
+            res.json({
+                message: 'deleted',
+                changes: result.affectedRows,
+                id: req.params.id
+            });
+        }
+    });
+});
 
 module.exports = router;
