@@ -206,6 +206,37 @@ app.post('/api/candidate', ({ body }, res) => {
     });
 });
 
+// update a candidate's party
+app.put('/api/candidate/:id', (req, res) => {
+    // forces any PUT request to /api/candidate/:id to include a party_id property; even if the intention is to remove a party affiliation by setting it to null, the party_id property is still required
+    const errors = inputCheck(req.body, 'party_id');
+
+    if (errors) {
+        res.status(400).json({ error: errors });
+        return;
+    }
+
+    const sql = `UPDATE candidates SET party_id = ?
+                WHERE id = ?`;
+    const params = [req.body.party_id, req.params.id];
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            // check if a record was found
+        } else if (!result.affectedRows) {
+            res.json({
+                message: 'Candidate not found'
+            });
+        } else {
+            res.json({
+                message: 'success',
+                data: req.body,
+                changes: result.affectedRows
+            });
+        }
+    });
+});
+
 // default response for any other request (Not Found)
 // displays 404 response when user tries undefined endpoints at the server
 // this is a catchall route and must be placed as the last route as it overrides all the others if placed before
