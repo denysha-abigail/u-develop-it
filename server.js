@@ -1,6 +1,7 @@
 const express = require('express');
-const mysql = require('mysql2');
+const db = require('./db/connection');
 const inputCheck = require('./utils/inputCheck');
+
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -8,19 +9,6 @@ const app = express();
 // middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
-// connect to the database
-const db = mysql.createConnection(
-    {
-        host: 'localhost',
-        // your MySQL username
-        user: 'root',
-        // your MySQL password
-        password: 'ana0314*',
-        database: 'election'
-    },
-    console.log('Connected to the election database.')
-);
 
 // db object is using the query() method that runs the sql query and executes the callback with all the resulting rows that match the query
 // once the method executes the sql command, the callback function captures the responses in two variables -> err for the error response and rows for the database query response
