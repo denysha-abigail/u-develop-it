@@ -29,3 +29,7 @@ db.connect(err => {
       console.log(`Server running on port ${PORT}`);
     });
   });
+
+
+  // IMPORTANT ORDER FOR SERVER.JS:
+  // 1. express.json, 2. express.urlencoded, 3. express.static('public'), 4. routes, 5. listen
